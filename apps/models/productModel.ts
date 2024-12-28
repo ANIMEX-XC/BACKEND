@@ -1,19 +1,24 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index'
+import { ProductTransactionCategory } from './transactionCategoryModel'
+import { ProductImageModel } from './productImageModel'
+import { ProductRatingModel } from './productRatingModel'
 import { ZygoteAttributes, ZygoteModel } from './zygote'
-import { ProductVariantModel } from './productVariantModel'
 
 export interface ProductAttributes extends ZygoteAttributes {
   productId: number
+  productUserId: number
   productName: string
-  productCode: string
-  productCategory: string
+  productDescription: string
+  productTransactionCategoryId: number
+  productImages: string
   productPrice: number
-  productStockQuantity: number
-  productImage: string
+  productWeight: number
+  productColors: string
+  productSizes: string
 }
 
-type ProductCreationAttributes = Optional<ProductAttributes, 'createdAt' | 'updatedAt'>
+type ProductCreationAttributes = Optional<ProductAttributes, 'productId'>
 
 export interface ProductInstance
   extends Model<ProductAttributes, ProductCreationAttributes>,
@@ -28,45 +33,61 @@ export const ProductModel = sequelize.define<ProductInstance>(
       autoIncrement: true,
       primaryKey: true
     },
+    productUserId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    },
     productName: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
       allowNull: false
     },
-    productCode: {
-      type: DataTypes.STRING(10),
-      allowNull: false
-    },
-    productCategory: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    productImage: {
+    productDescription: {
       type: DataTypes.TEXT,
+      allowNull: false
+    },
+    productTransactionCategoryId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    },
+    productImages: {
+      type: DataTypes.STRING,
       allowNull: true
     },
     productPrice: {
-      type: DataTypes.DECIMAL(10, 2),
+      type: DataTypes.FLOAT,
       allowNull: false
     },
-    productStockQuantity: {
-      type: DataTypes.INTEGER,
+    productWeight: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    productColors: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    productSizes: {
+      type: DataTypes.STRING,
       allowNull: true
     }
   },
   {
-    tableName: 'products',
-    timestamps: true,
+    tableName: 'product',
+    timestamps: false,
     underscored: true,
     freezeTableName: true
   }
 )
 
-ProductModel.hasMany(ProductVariantModel, {
-  foreignKey: 'productId',
-  as: 'variants'
+// Relationships
+ProductModel.belongsTo(ProductTransactionCategory, {
+  foreignKey: 'productTransactionCategoryId',
+  as: 'transactionCategory'
 })
-
-ProductVariantModel.belongsTo(ProductModel, {
-  foreignKey: 'productId',
-  as: 'product'
+ProductModel.hasMany(ProductImageModel, {
+  foreignKey: 'productImageProductId',
+  as: 'images'
+})
+ProductModel.hasMany(ProductRatingModel, {
+  foreignKey: 'productRattingProductId',
+  as: 'ratings'
 })

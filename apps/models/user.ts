@@ -8,6 +8,7 @@ export interface UserAttributes extends ZygoteAttributes {
   userName: string
   userPassword: string
   userRole: 'superAdmin' | 'admin' | 'user'
+  userLevel: 'silver' | 'gold' | 'platinum'
 }
 
 // Specifying optional attributes for creation
@@ -40,6 +41,11 @@ export const UserModel = sequelize.define<UserInstance>(
       type: DataTypes.ENUM('superAdmin', 'admin', 'user'),
       allowNull: false,
       defaultValue: 'user'
+    },
+    userLevel: {
+      type: DataTypes.ENUM('silver', 'gold', 'platinum'),
+      allowNull: false,
+      defaultValue: 'silver'
     }
   },
   {
