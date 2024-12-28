@@ -1,19 +1,19 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index'
-import { ProductModel } from './productModel'
 import { ZygoteAttributes, ZygoteModel } from './zygote'
+import { UserModel } from './user'
 
 export interface ProductRatingAttributes extends ZygoteAttributes {
-  productRattingId: number
-  productRattingUserId: number
-  productRattingProductId: number
-  productRattingStart: number
-  productRattingDescription: string
+  productRatingId: number
+  productRatingUserId: number
+  productRatingProductId: number
+  productRatingStart: number
+  productRatingDescription: string
 }
 
 type ProductRatingCreationAttributes = Optional<
   ProductRatingAttributes,
-  'productRattingId'
+  'productRatingId'
 >
 
 export interface ProductRatingInstance
@@ -21,27 +21,27 @@ export interface ProductRatingInstance
     ProductRatingAttributes {}
 
 export const ProductRatingModel = sequelize.define<ProductRatingInstance>(
-  'ProductRating',
+  'ProductRatings',
   {
     ...ZygoteModel,
-    productRattingId: {
+    productRatingId: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true
     },
-    productRattingUserId: {
+    productRatingUserId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
-    productRattingProductId: {
+    productRatingProductId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
-    productRattingStart: {
+    productRatingStart: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    productRattingDescription: {
+    productRatingDescription: {
       type: DataTypes.TEXT,
       allowNull: true
     }
@@ -54,8 +54,12 @@ export const ProductRatingModel = sequelize.define<ProductRatingInstance>(
   }
 )
 
-// Relationships
-ProductRating.belongsTo(ProductModel, {
-  foreignKey: 'productRattingProductId',
-  as: 'product'
+ProductRatingModel.belongsTo(UserModel, {
+  foreignKey: 'productRatingUserId',
+  as: 'user'
+})
+
+UserModel.hasOne(ProductRatingModel, {
+  foreignKey: 'productRatingUserId',
+  as: 'productRating'
 })

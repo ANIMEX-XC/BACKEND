@@ -1,7 +1,8 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index'
+import { ZygoteAttributes, ZygoteModel } from './zygote'
 
-export interface ProductCategoryAttributes {
+export interface ProductCategoryAttributes extends ZygoteAttributes {
   productCategoryId: number
   productCategoryName: string
 }
@@ -15,9 +16,10 @@ export interface ProductCategoryInstance
   extends Model<ProductCategoryAttributes, ProductCategoryCreationAttributes>,
     ProductCategoryAttributes {}
 
-export const ProductCategory = sequelize.define<ProductCategoryInstance>(
+export const ProductCategoryModel = sequelize.define<ProductCategoryInstance>(
   'ProductCategory',
   {
+    ...ZygoteModel,
     productCategoryId: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,

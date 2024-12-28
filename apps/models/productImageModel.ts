@@ -1,8 +1,8 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index'
-import { ProductModel } from './productModel'
+import { ZygoteAttributes, ZygoteModel } from './zygote'
 
-export interface ProductImageAttributes {
+export interface ProductImageAttributes extends ZygoteAttributes {
   productImageId: number
   productImageProductId: number
   productImageUrl: string
@@ -15,8 +15,9 @@ export interface ProductImageInstance
     ProductImageAttributes {}
 
 export const ProductImageModel = sequelize.define<ProductImageInstance>(
-  'ProductImage',
+  'ProductImages',
   {
+    ...ZygoteModel,
     productImageId: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
@@ -38,9 +39,3 @@ export const ProductImageModel = sequelize.define<ProductImageInstance>(
     freezeTableName: true
   }
 )
-
-// Relationships
-ProductImage.belongsTo(ProductModel, {
-  foreignKey: 'productImageProductId',
-  as: 'product'
-})

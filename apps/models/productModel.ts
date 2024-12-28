@@ -1,6 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index'
-import { ProductTransactionCategory } from './transactionCategoryModel'
 import { ProductImageModel } from './productImageModel'
 import { ProductRatingModel } from './productRatingModel'
 import { ZygoteAttributes, ZygoteModel } from './zygote'
@@ -10,12 +9,12 @@ export interface ProductAttributes extends ZygoteAttributes {
   productUserId: number
   productName: string
   productDescription: string
-  productTransactionCategoryId: number
-  productImages: string
+  productCategoryId: number
   productPrice: number
   productWeight: number
   productColors: string
   productSizes: string
+  productTransactionType: 'Sell' | 'Auction' | 'Barter' | 'PurchaseOrder'
 }
 
 type ProductCreationAttributes = Optional<ProductAttributes, 'productId'>
@@ -25,7 +24,7 @@ export interface ProductInstance
     ProductAttributes {}
 
 export const ProductModel = sequelize.define<ProductInstance>(
-  'Product',
+  'Products',
   {
     ...ZygoteModel,
     productId: {
@@ -45,13 +44,9 @@ export const ProductModel = sequelize.define<ProductInstance>(
       type: DataTypes.TEXT,
       allowNull: false
     },
-    productTransactionCategoryId: {
+    productCategoryId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
-    },
-    productImages: {
-      type: DataTypes.STRING,
-      allowNull: true
     },
     productPrice: {
       type: DataTypes.FLOAT,
@@ -68,26 +63,27 @@ export const ProductModel = sequelize.define<ProductInstance>(
     productSizes: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    productTransactionType: {
+      type: DataTypes.ENUM('Sell', 'Auction', 'Barter', 'PurchaseOrder'),
+      allowNull: false,
+      defaultValue: 'Sell'
     }
   },
   {
-    tableName: 'product',
+    tableName: 'products',
     timestamps: false,
     underscored: true,
     freezeTableName: true
   }
 )
 
-// Relationships
-ProductModel.belongsTo(ProductTransactionCategory, {
-  foreignKey: 'productTransactionCategoryId',
-  as: 'transactionCategory'
-})
 ProductModel.hasMany(ProductImageModel, {
   foreignKey: 'productImageProductId',
   as: 'images'
 })
+
 ProductModel.hasMany(ProductRatingModel, {
-  foreignKey: 'productRattingProductId',
+  foreignKey: 'productRatingProductId',
   as: 'ratings'
 })

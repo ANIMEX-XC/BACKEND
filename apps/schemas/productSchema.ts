@@ -1,45 +1,64 @@
 import Joi from 'joi'
 
-const variantSchema = Joi.object({
-  variantId: Joi.number().integer().optional().allow(''),
-  productId: Joi.number().integer().optional().allow(''),
-  variantName: Joi.string().max(255).required(),
-  variantPrice: Joi.number().positive().required(),
-  variantSize: Joi.string().max(100).optional(),
-  variantColor: Joi.string().max(100).optional(),
-  variantCategory: Joi.string().max(100).optional()
-})
-
+// Schema for creating a new Product
 export const createProductSchema = Joi.object({
+  productUserId: Joi.number().integer().positive().required(),
   productName: Joi.string().max(255).required(),
-  productImage: Joi.string().optional(),
-  productCategory: Joi.string().max(100).allow('').optional(),
+  productDescription: Joi.string().required(),
+  productCategoryId: Joi.number().integer().positive().required(),
   productPrice: Joi.number().positive().required(),
-  productStockQuantity: Joi.number().integer().required(),
-  variants: Joi.array().items(variantSchema).optional(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional()
+  productWeight: Joi.number().positive().required(),
+  productColors: Joi.string().optional(),
+  productSizes: Joi.string().optional(),
+  productTransactionType: Joi.valid('Sell', 'Auction', 'Barter', 'PurchaseOrder')
+    .default('Sell')
+    .required(),
+  productImages: Joi.array()
+    .items(
+      Joi.object({
+        productImageUrl: Joi.string().uri().required()
+      })
+    )
+    .required()
 })
 
+// Schema for updating an existing Product
 export const updateProductSchema = Joi.object({
   productId: Joi.number().integer().positive().required(),
+  productUserId: Joi.number().integer().positive().optional(),
   productName: Joi.string().max(255).optional(),
-  productImage: Joi.string().optional(),
-  productCategory: Joi.string().max(100).allow('').optional(),
+  productDescription: Joi.string().optional(),
+  productCategoryId: Joi.number().integer().positive().optional(),
   productPrice: Joi.number().positive().optional(),
-  variants: Joi.array().items(variantSchema).optional(),
-  productStockQuantity: Joi.number().integer().optional(),
-  updatedAt: Joi.date().optional()
+  productWeight: Joi.number().positive().optional(),
+  productColors: Joi.string().optional(),
+  productSizes: Joi.string().optional(),
+  productTransactionType: Joi.valid(
+    'Sell',
+    'Auction',
+    'Barter',
+    'PurchaseOrder'
+  ).optional(),
+  productImages: Joi.array()
+    .items(
+      Joi.object({
+        productImageUrl: Joi.string().uri().required()
+      })
+    )
+    .optional()
 })
 
+// Schema for deleting a Product
 export const deleteProductSchema = Joi.object({
   productId: Joi.number().integer().positive().required()
 })
 
+// Schema for fetching a single Product
 export const findOneProductSchema = Joi.object({
   productId: Joi.number().integer().positive().required()
 })
 
+// Schema for fetching all Products with pagination and search support
 export const findAllProductsSchema = Joi.object({
   page: Joi.number().integer().optional(),
   size: Joi.number().integer().optional(),

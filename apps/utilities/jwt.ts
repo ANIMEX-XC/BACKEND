@@ -3,7 +3,7 @@ import { APP_CONFIGS } from '../configs'
 
 export interface JwtPayloadTypes {
   userId: string
-  userRole: 'user' | 'admin' | 'superAdmin'
+  userRole: 'User' | 'Admin' | 'SuperAdmin'
 }
 
 export const generateAccessToken = (user: JwtPayloadTypes): any => {

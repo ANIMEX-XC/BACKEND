@@ -7,7 +7,7 @@ export const userLoginSchema = Joi.object({
 
 export const userRegistrationSchema = Joi.object({
   userName: Joi.string().required(),
-  userRole: Joi.string().valid('superAdmin', 'admin', 'user').required(),
+  userRole: Joi.string().valid('SuperAdmin', 'Admin', 'User').required(),
   userPassword: Joi.string().min(6).required()
 })
 
@@ -26,12 +26,14 @@ export const userSchema = Joi.object({
   userId: Joi.string().required(),
   userName: Joi.string().min(3).max(30).required(),
   userPassword: Joi.string().min(6).max(128).required(),
-  userRole: Joi.string().valid('superAdmin', 'admin', 'user').required()
+  userRole: Joi.string().valid('SuperAdmin', 'Admin', 'User').required(),
+  userLevel: Joi.string().valid('Silver', 'Gold', 'Platinum').required()
 })
 
 export const updateUserSchema = Joi.object({
   userId: Joi.string().required(),
   userName: Joi.string().min(3).max(30).required(),
   userPassword: Joi.string().min(6).max(128).required(),
-  userRole: Joi.string().valid('superAdmin', 'admin', 'user').required()
+  userRole: Joi.string().valid('SuperAdmin', 'Admin', 'User').required(),
+  userLevel: Joi.string().valid('Silver', 'Gold', 'Platinum').optional()
 })
