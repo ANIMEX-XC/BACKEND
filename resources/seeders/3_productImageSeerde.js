@@ -50,6 +50,42 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
         deleted_at: null
+      },
+      {
+        product_image_id: 6,
+        product_image_product_id: 6, // Assuming the product_id of the product is 2
+        product_image_url:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJw_KkFKS2fDak2jtFbxcQ4nWKCPkpMpgoTQ&s',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null
+      },
+      {
+        product_image_id: 7,
+        product_image_product_id: 7, // Assuming the product_id of the product is 2
+        product_image_url:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeAv9_g36I6zWOD7D2EKLcdkbHZT3AiNApow&s',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null
+      },
+      {
+        product_image_id: 8,
+        product_image_product_id: 5, // Assuming the product_id of the product is 2
+        product_image_url:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwCSy0MunsN2H9omy7QZEd36BiiQEb8Cvb0Q&s',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null
+      },
+      {
+        product_image_id: 9,
+        product_image_product_id: 4, // Assuming the product_id of the product is 2
+        product_image_url:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUGqHTdVb9bCTHTkyeE_RS0cL0NEGp214sUw&s',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null
       }
     ])
   },

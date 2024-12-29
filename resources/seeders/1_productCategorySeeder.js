@@ -6,21 +6,21 @@ module.exports = {
     await queryInterface.bulkInsert('product_categories', [
       {
         product_category_id: 1,
-        product_category_name: 'Electronics',
+        product_category_name: 'Kura-kura',
         created_at: new Date(),
         updated_at: new Date(),
         deleted_at: null
       },
       {
         product_category_id: 2,
-        product_category_name: 'Clothing',
+        product_category_name: 'Burung',
         created_at: new Date(),
         updated_at: new Date(),
         deleted_at: null
       },
       {
         product_category_id: 3,
-        product_category_name: 'Home Appliances',
+        product_category_name: 'Ikan',
         created_at: new Date(),
         updated_at: new Date(),
         deleted_at: null

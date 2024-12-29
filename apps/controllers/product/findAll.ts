@@ -38,7 +38,8 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
           model: ProductRatingModel,
           as: 'ratings',
           include: [{ model: UserModel, as: 'user', attributes: ['userName'] }]
-        }
+        },
+        { model: UserModel, as: 'user', attributes: ['userName', 'userLevel'] }
       ],
       order: [['productId', 'desc']],
       ...(pagination === true && {

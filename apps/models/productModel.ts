@@ -3,6 +3,7 @@ import { sequelize } from './index'
 import { ProductImageModel } from './productImageModel'
 import { ProductRatingModel } from './productRatingModel'
 import { ZygoteAttributes, ZygoteModel } from './zygote'
+import { UserModel } from './user'
 
 export interface ProductAttributes extends ZygoteAttributes {
   productId: number
@@ -86,4 +87,9 @@ ProductModel.hasMany(ProductImageModel, {
 ProductModel.hasMany(ProductRatingModel, {
   foreignKey: 'productRatingProductId',
   as: 'ratings'
+})
+
+ProductModel.belongsTo(UserModel, {
+  foreignKey: 'productUserId',
+  as: 'user'
 })
