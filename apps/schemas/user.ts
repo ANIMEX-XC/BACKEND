@@ -7,8 +7,10 @@ export const userLoginSchema = Joi.object({
 
 export const userRegistrationSchema = Joi.object({
   userName: Joi.string().required(),
+  userPassword: Joi.string().min(6).required(),
+  userContact: Joi.string().optional().allow(''),
   userRole: Joi.string().valid('SuperAdmin', 'Admin', 'User').required(),
-  userPassword: Joi.string().min(6).required()
+  userLevel: Joi.string().valid('Silver', 'Gold', 'Platinum').optional()
 })
 
 export const findAllUsersSchema = Joi.object({
@@ -33,6 +35,7 @@ export const userSchema = Joi.object({
 export const updateUserSchema = Joi.object({
   userId: Joi.string().required(),
   userName: Joi.string().min(3).max(30).required(),
+  userContact: Joi.string().optional().allow(''),
   userPassword: Joi.string().min(6).max(128).required(),
   userRole: Joi.string().valid('SuperAdmin', 'Admin', 'User').required(),
   userLevel: Joi.string().valid('Silver', 'Gold', 'Platinum').optional()

@@ -17,7 +17,10 @@ export const create = async (req: any, res: Response): Promise<Response> => {
   }
 
   try {
-    const product = await ProductModel.create(value)
+    const product = await ProductModel.create({
+      ...value,
+      productUserId: value.jwtPayload.userId
+    })
 
     console.log(value)
 

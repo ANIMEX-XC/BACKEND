@@ -6,7 +6,6 @@ import { userRegistrationSchema } from '../../schemas/user'
 import { ResponseData } from '../../utilities/response'
 import { type UserAttributes, UserModel } from '../../models/user'
 import { hashPassword } from '../../utilities/scure_password'
-import { v4 as uuidv4 } from 'uuid'
 import logger from '../../utilities/logger'
 
 export const userRegister = async (req: any, res: Response): Promise<Response> => {

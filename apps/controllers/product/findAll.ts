@@ -25,9 +25,14 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
+    console.log(req.body)
+
     const result = await ProductModel.findAndCountAll({
       where: {
         deleted: 0,
+        ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
+          productUserId: req.body?.jwtPayload?.userId
+        }),
         ...(Boolean(search) && {
           productName: { [Op.like]: `%${search}%` }
         })

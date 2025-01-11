@@ -1,15 +1,16 @@
 import Joi from 'joi'
+import { jwtPayloadSchema } from './jwtPayloadSchema'
 
 // Schema for creating a new Product
 export const createProductSchema = Joi.object({
-  productUserId: Joi.number().integer().positive().required(),
+  jwtPayload: jwtPayloadSchema,
   productName: Joi.string().max(255).required(),
   productDescription: Joi.string().required(),
   productCategoryId: Joi.number().integer().positive().required(),
   productPrice: Joi.number().positive().required(),
   productWeight: Joi.number().positive().required(),
-  productColors: Joi.string().optional(),
-  productSizes: Joi.string().optional(),
+  productColors: Joi.string().optional().allow(''),
+  productSizes: Joi.string().optional().allow(''),
   productTransactionType: Joi.valid('Sell', 'Auction', 'Barter', 'PurchaseOrder')
     .default('Sell')
     .required(),
@@ -24,6 +25,7 @@ export const createProductSchema = Joi.object({
 
 // Schema for updating an existing Product
 export const updateProductSchema = Joi.object({
+  jwtPayload: jwtPayloadSchema,
   productId: Joi.number().integer().positive().required(),
   productUserId: Joi.number().integer().positive().optional(),
   productName: Joi.string().max(255).optional(),
@@ -31,8 +33,8 @@ export const updateProductSchema = Joi.object({
   productCategoryId: Joi.number().integer().positive().optional(),
   productPrice: Joi.number().positive().optional(),
   productWeight: Joi.number().positive().optional(),
-  productColors: Joi.string().optional(),
-  productSizes: Joi.string().optional(),
+  productColors: Joi.string().optional().allow(''),
+  productSizes: Joi.string().optional().allow(''),
   productTransactionType: Joi.valid(
     'Sell',
     'Auction',

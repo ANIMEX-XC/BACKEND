@@ -20,6 +20,10 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false
       },
+      user_contact: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       user_role: {
         type: DataTypes.ENUM('superAdmin', 'admin', 'user'),
         allowNull: false,

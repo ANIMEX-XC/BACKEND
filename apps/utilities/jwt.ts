@@ -3,6 +3,8 @@ import { APP_CONFIGS } from '../configs'
 
 export interface JwtPayloadTypes {
   userId: string
+  userName: string
+  userContact: string
   userRole: 'User' | 'Admin' | 'SuperAdmin'
 }
 
