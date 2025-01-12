@@ -4,7 +4,7 @@ import { findOne } from './findOne'
 import { remove } from './remove'
 import { update } from './update'
 
-export const notificationControllers = {
+export const addressControllers = {
   findAll,
   findOne,
   create,

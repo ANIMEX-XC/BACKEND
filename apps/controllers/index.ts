@@ -5,7 +5,7 @@ import { ResponseData } from '../utilities/response'
 export const index = async (req: Request, res: Response): Promise<Response> => {
   try {
     const data = {
-      about_me: 'Welcome to Cara Ngoding API V1'
+      aboutMe: 'Welcome to ANIMAX API V1'
     }
     const response = ResponseData.success(data)
     return res.status(StatusCodes.OK).json(response)

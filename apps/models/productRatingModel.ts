@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import { sequelize } from './index'
 import { ZygoteAttributes, ZygoteModel } from './zygote'
-import { UserModel } from './user'
+import { UserModel } from './userModel'
 
 export interface ProductRatingAttributes extends ZygoteAttributes {
   productRatingId: number

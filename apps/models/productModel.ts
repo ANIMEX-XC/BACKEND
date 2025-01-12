@@ -3,7 +3,7 @@ import { sequelize } from './index'
 import { ProductImageModel } from './productImageModel'
 import { ProductRatingModel } from './productRatingModel'
 import { ZygoteAttributes, ZygoteModel } from './zygote'
-import { UserModel } from './user'
+import { UserModel } from './userModel'
 
 export interface ProductAttributes extends ZygoteAttributes {
   productId: number

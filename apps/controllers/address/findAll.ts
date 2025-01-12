@@ -2,17 +2,14 @@ import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { ProductModel } from '../../models/productModel'
-import { findAllProductsSchema } from '../../schemas/productSchema'
+import { AddressModel } from '../../models/addressModel'
+import { findAllAddressesSchema } from '../../schemas/addressSchema'
 import logger from '../../utilities/logger'
 import { Pagination } from '../../utilities/pagination'
 import { Op } from 'sequelize'
-import { ProductImageModel } from '../../models/productImageModel'
-import { ProductRatingModel } from '../../models/productRatingModel'
-import { UserModel } from '../../models/userModel'
 
 export const findAll = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(findAllProductsSchema, req.query)
+  const { error, value } = validateRequest(findAllAddressesSchema, req.query)
 
   if (error) {
     const message = `Invalid request query! ${error.details.map((x) => x.message).join(', ')}`
@@ -25,28 +22,14 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
-    console.log(req.body)
-
-    const result = await ProductModel.findAndCountAll({
+    const result = await AddressModel.findAndCountAll({
       where: {
         deleted: 0,
-        ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
-          productUserId: req.body?.jwtPayload?.userId
-        }),
         ...(Boolean(search) && {
-          productName: { [Op.like]: `%${search}%` }
+          addressName: { [Op.like]: `%${search}%` }
         })
       },
-      include: [
-        { model: ProductImageModel, as: 'images', attributes: ['productImageUrl'] },
-        {
-          model: ProductRatingModel,
-          as: 'ratings',
-          include: [{ model: UserModel, as: 'user', attributes: ['userName'] }]
-        },
-        { model: UserModel, as: 'user', attributes: ['userName', 'userLevel'] }
-      ],
-      order: [['productId', 'desc']],
+      order: [['addressId', 'desc']],
       ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
@@ -56,7 +39,7 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
     const response = ResponseData.success(result)
     response.data = page.formatData(result)
 
-    logger.info('Products retrieved successfully')
+    logger.info('Addresses retrieved successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

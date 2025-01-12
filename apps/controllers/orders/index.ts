@@ -1,12 +1,13 @@
-import { createOrder } from './create'
-import { findAllOrder, findDetailOrder } from './find'
-import { removeOrder } from './remove'
-import { updateOrder } from './update'
+import { create } from './create'
+import { findAll } from './findAll'
+import { findOne } from './findOne'
+import { remove } from './remove'
+import { update } from './update'
 
-export const orderController = {
-  create: createOrder,
-  findAll: findAllOrder,
-  findOne: findDetailOrder,
-  remove: removeOrder,
-  update: updateOrder
+export const orderControllers = {
+  findAll,
+  findOne,
+  create,
+  update,
+  remove
 }

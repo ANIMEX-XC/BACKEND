@@ -1,63 +1,39 @@
-import { type Response } from 'express'
+import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { Op } from 'sequelize'
-import { requestChecker } from '../../utilities/requestCheker'
-import {
-  NotificationModel,
-  type NotificationAttributes
-} from '../../models/notifications'
+import { NotificationModel } from '../../models/notificationModel'
+import { updateNotificationSchema } from '../../schemas/notificationSchema'
+import logger from '../../utilities/logger'
 
-export const updateNotification = async (req: any, res: Response): Promise<any> => {
-  const requestBody = req.body as NotificationAttributes
+export const update = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(updateNotificationSchema, req.body)
 
-  const emptyField = requestChecker({
-    requireList: ['notificationId'],
-    requestData: requestBody
-  })
-
-  if (emptyField.length > 0) {
-    const message = `invalid request parameter! require (${emptyField})`
-    const response = ResponseData.error(message)
-    return res.status(StatusCodes.BAD_REQUEST).json(response)
+  if (error) {
+    const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
+    logger.warn(message)
+    return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
   try {
-    const result = await NotificationModel.findOne({
-      where: {
-        deleted: { [Op.eq]: 0 },
-        notificationId: { [Op.eq]: requestBody.notificationId }
-      }
+    const [updated] = await NotificationModel.update(value, {
+      where: { deleted: 0, notificationId: value.notificationId }
     })
 
-    if (result == null) {
-      const message = 'not found!'
-      const response = ResponseData.error(message)
-      return res.status(StatusCodes.NOT_FOUND).json(response)
+    if (!updated) {
+      const message = `Notification not found with ID: ${value.notificationId}`
+      logger.warn(message)
+      return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    const newData: NotificationAttributes | any = {
-      ...(requestBody.notificationName.length > 0 && {
-        notificationName: requestBody.notificationName
-      }),
-      ...(requestBody.notificationMessage.length > 0 && {
-        notificationMessage: requestBody.notificationMessage
-      })
-    }
-
-    await NotificationModel.update(newData, {
-      where: {
-        deleted: { [Op.eq]: 0 },
-        notificationId: { [Op.eq]: requestBody.notificationId }
-      }
+    const response = ResponseData.success({
+      message: 'Notification updated successfully'
     })
-
-    const response = ResponseData.default
-    response.data = { message: 'success' }
+    logger.info('Notification updated successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
-    const message = `unable to process request! error ${error.message}`
-    const response = ResponseData.error(message)
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(response)
+    const message = `Unable to process request! Error: ${error.message}`
+    logger.error(message, { stack: error.stack })
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ResponseData.error(message))
   }
 }

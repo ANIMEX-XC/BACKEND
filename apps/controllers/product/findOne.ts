@@ -7,7 +7,7 @@ import { findOneProductSchema } from '../../schemas/productSchema'
 import logger from '../../utilities/logger'
 import { ProductImageModel } from '../../models/productImageModel'
 import { ProductRatingModel } from '../../models/productRatingModel'
-import { UserModel } from '../../models/user'
+import { UserModel } from '../../models/userModel'
 
 export const findOne = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneProductSchema, req.params)
