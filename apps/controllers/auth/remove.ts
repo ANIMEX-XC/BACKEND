@@ -2,9 +2,9 @@ import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { ResponseData } from '../../utilities/response'
 import { Op } from 'sequelize'
-import { UserModel } from '../../models/user'
+import { UserModel } from '../../models/userModel'
 import { validateRequest } from '../../utilities/validateRequest'
-import { findOneUserSchema } from '../../schemas/user'
+import { findOneUserSchema } from '../../schemas/userSchema'
 import logger from '../../utilities/logger'
 
 export const removeUser = async (req: any, res: Response): Promise<Response> => {

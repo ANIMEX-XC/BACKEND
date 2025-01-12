@@ -2,12 +2,12 @@ import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { OrdersModel } from '../../models/orderModel'
-import { updateOrderSchema } from '../../schemas/orderSchema'
+import { AddressModel } from '../../models/addressModel'
+import { updateAddressSchema } from '../../schemas/addressSchema'
 import logger from '../../utilities/logger'
 
 export const update = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(updateOrderSchema, req.body)
+  const { error, value } = validateRequest(updateAddressSchema, req.body)
 
   if (error) {
     const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
@@ -16,20 +16,20 @@ export const update = async (req: any, res: Response): Promise<Response> => {
   }
 
   try {
-    const [updated] = await OrdersModel.update(value, {
-      where: { deleted: 0, orderId: value.orderId }
+    const [updated] = await AddressModel.update(value, {
+      where: { deleted: 0, addressId: value.addressId }
     })
 
     if (!updated) {
-      const message = `Order not found with ID: ${value.orderId}`
+      const message = `Address not found with ID: ${value.addressId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
     const response = ResponseData.success({
-      message: 'Order updated successfully'
+      message: 'Address updated successfully'
     })
-    logger.info('Order updated successfully')
+    logger.info('Address updated successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

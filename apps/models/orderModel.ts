@@ -1,30 +1,22 @@
 /* eslint-disable @typescript-eslint/indent */
-import { DataTypes, type Model, type Optional, UUIDV4 } from 'sequelize'
+import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from '.'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
 import { ProductModel } from './productModel'
-import { UserModel } from './user'
-import { MyAddressesModel } from './myAddress'
 
 export interface OrdersAttributes extends ZygoteAttributes {
-  orderId: string
-  orderUserId: string
-  orderProductId: string
+  orderId: number
+  orderUserBuyerId: number
+  orderUserOwnerId: number
+  orderProductId: number
   orderProductPrice: number
   orderTotalProductPrice: number
   orderOngkirPrice: number
-  orderProductSizeSelected: string
-  orderProductColorSelected: string
   orderTotalItem: number
   orderStatus: 'waiting' | 'process' | 'delivery' | 'done' | 'cancel'
-  orderTransferBankImage: number
 }
 
-// we're telling the Model that 'id' is optional
-// when creating an instance of the model (such as using Model.create()).
 type OrdersCreationAttributes = Optional<OrdersAttributes, 'createdAt' | 'updatedAt'>
-
-// We need to declare an interface for our model that is basically what our class would be
 
 interface OrdersInstance
   extends Model<OrdersAttributes, OrdersCreationAttributes>,
@@ -35,16 +27,20 @@ export const OrdersModel = sequelize.define<OrdersInstance>(
   {
     ...ZygoteModel,
     orderId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      defaultValue: UUIDV4()
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true
     },
-    orderUserId: {
-      type: DataTypes.STRING,
+    orderUserBuyerId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    },
+    orderUserOwnerId: {
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
     orderProductId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
     orderProductPrice: {
@@ -63,23 +59,10 @@ export const OrdersModel = sequelize.define<OrdersInstance>(
       type: DataTypes.NUMBER,
       allowNull: false
     },
-    orderProductSizeSelected: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    orderProductColorSelected: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
     orderStatus: {
       type: DataTypes.ENUM('waiting', 'process', 'delivery', 'done', 'cancel'),
       allowNull: false,
       defaultValue: 'waiting'
-    },
-    orderTransferBankImage: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: null
     }
   },
   {
@@ -97,14 +80,4 @@ export const OrdersModel = sequelize.define<OrdersInstance>(
 OrdersModel.hasOne(ProductModel, {
   sourceKey: 'orderProductId',
   foreignKey: 'productId'
-})
-
-OrdersModel.hasOne(UserModel, {
-  sourceKey: 'orderUserId',
-  foreignKey: 'userId'
-})
-
-OrdersModel.hasOne(MyAddressesModel, {
-  sourceKey: 'orderUserId',
-  foreignKey: 'addressUserId'
 })

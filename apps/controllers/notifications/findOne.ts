@@ -2,34 +2,35 @@ import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { OrdersModel } from '../../models/orderModel'
-import { updateOrderSchema } from '../../schemas/orderSchema'
+import { NotificationModel } from '../../models/notificationModel'
+import { findOneNotificationSchema } from '../../schemas/notificationSchema'
 import logger from '../../utilities/logger'
 
-export const update = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(updateOrderSchema, req.body)
+export const findOne = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(findOneNotificationSchema, req.params)
 
   if (error) {
-    const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
+    const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
   try {
-    const [updated] = await OrdersModel.update(value, {
-      where: { deleted: 0, orderId: value.orderId }
+    const result = await NotificationModel.findOne({
+      where: {
+        deleted: 0,
+        notificationId: value.notificationId
+      }
     })
 
-    if (!updated) {
-      const message = `Order not found with ID: ${value.orderId}`
+    if (!result) {
+      const message = `Notification not found with ID: ${value.notificationId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    const response = ResponseData.success({
-      message: 'Order updated successfully'
-    })
-    logger.info('Order updated successfully')
+    const response = ResponseData.success(result)
+    logger.info('Notification found successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

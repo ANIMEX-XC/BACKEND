@@ -3,10 +3,10 @@ import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { UserAttributes, UserModel } from '../../models/user'
+import { UserAttributes, UserModel } from '../../models/userModel'
 import { hashPassword } from '../../utilities/scure_password'
 import { generateAccessToken } from '../../utilities/jwt'
-import { userLoginSchema } from '../../schemas/user'
+import { userLoginSchema } from '../../schemas/userSchema'
 import logger from '../../utilities/logger'
 
 export const userLogin = async (req: Request, res: Response): Promise<Response> => {
