@@ -4,9 +4,9 @@ import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { UserModel } from '../../models/user'
+import { UserModel } from '../../models/userModel'
 import { Pagination } from '../../utilities/pagination'
-import { findAllUsersSchema, findOneUserSchema } from '../../schemas/user'
+import { findAllUsersSchema, findOneUserSchema } from '../../schemas/userSchema'
 import logger from '../../utilities/logger'
 
 export const findAllUser = async (req: any, res: Response): Promise<Response> => {

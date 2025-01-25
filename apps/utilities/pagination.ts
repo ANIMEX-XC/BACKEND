@@ -19,12 +19,12 @@ class Pagination {
   }
 
   public formatData(data: PaginationDataType) {
-    const { count, rows } = data
+    const { rows } = data
 
-    const totalPages = Math.ceil(count / this.limit)
+    const totalPages = Math.ceil(rows.length / this.limit)
 
     return {
-      totalItems: count,
+      totalItems: rows.length,
       items: rows,
       totalPages,
       currentPage: this.page > 0 ? this.page : 0

@@ -1,6 +1,6 @@
 import { mockRequest, mockResponse } from '../utilities/testHelpers'
 import { userLogin } from '../controllers/auth/login'
-import { UserModel } from '../models/user'
+import { UserModel } from '../models/userModel'
 import { StatusCodes } from 'http-status-codes'
 
 jest.mock('../models/user')

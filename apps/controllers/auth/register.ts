@@ -2,11 +2,10 @@ import { type Response, type Request } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
 import { validateRequest } from '../../utilities/validateRequest'
-import { userRegistrationSchema } from '../../schemas/user'
+import { userRegistrationSchema } from '../../schemas/userSchema'
 import { ResponseData } from '../../utilities/response'
-import { type UserAttributes, UserModel } from '../../models/user'
+import { type UserAttributes, UserModel } from '../../models/userModel'
 import { hashPassword } from '../../utilities/scure_password'
-import { v4 as uuidv4 } from 'uuid'
 import logger from '../../utilities/logger'
 
 export const userRegister = async (req: any, res: Response): Promise<Response> => {
