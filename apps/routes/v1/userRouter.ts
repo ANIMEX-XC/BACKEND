@@ -15,9 +15,11 @@ router.get(
   async (req: Request, res: Response) => UsersController.findOne(req, res)
 )
 
-router.patch('/', async (req: Request, res: Response) => UsersController.update(req, res))
+router.patch('/', middleware.useAuthorization, async (req: Request, res: Response) =>
+  UsersController.update(req, res)
+)
 
-router.delete('/', async (req: Request, res: Response) =>
+router.delete('/', middleware.useAuthorization, async (req: Request, res: Response) =>
   UsersController.remove(req, res)
 )
 

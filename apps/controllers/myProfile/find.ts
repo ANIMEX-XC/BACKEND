@@ -9,12 +9,20 @@ export const findMyProfile = async (req: any, res: Response): Promise<any> => {
     const resul = await UserModel.findOne({
       where: {
         deleted: { [Op.eq]: 0 },
-        userId: { [Op.eq]: req.body?.user?.userId }
+        userId: { [Op.eq]: req.body?.jwtPayload?.userId }
       },
-      attributes: ['userId', 'userName', 'userRole', 'createdAt', 'updatedAt']
+      attributes: [
+        'userId',
+        'userName',
+        'userContact',
+        'userRole',
+        'userLevel',
+        'createdAt',
+        'updatedAt'
+      ]
     })
 
-    if (resul == null) {
+    if (resul === null) {
       const message = 'user not found!'
       const response = ResponseData.error(message)
       return res.status(StatusCodes.NOT_FOUND).json(response)
